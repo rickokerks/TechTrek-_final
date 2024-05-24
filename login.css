@@ -1,0 +1,70 @@
+/* wow */
+
+.header {
+    width: 100%;
+    background-color: #1b1919;
+    padding: 7px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+
+}
+
+.logo {
+    max-width: 180px;
+    max-height: 180px;
+}
+
+body {
+ 
+    font-family: 'Bebas Neue', sans-serif;
+    border-top: 80px solid #1b1919;
+    background-image: url('background2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    overflow: auto;
+}
+
+.container {
+    margin-top: 150px;
+}
+
+input {
+    max-width: 300px;
+    min-width: 300px;
+    padding-right: 40px;
+
+}
+
+.btn-success {
+    background-color: rgb(65, 105, 225);
+    margin-top: 20px;
+}
+
+.btn-signup {
+    width: 300px;
+
+}
+
+/*ahahahhaha*/
+.password-container {
+    position: relative;
+    display: inline-block;
+}
+
+#eyeIcon {
+    position: absolute;
+    left: 89%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    max-width: 22px;
+    max-height: 22px;
+}
+
+/*i have a plan arthur*/

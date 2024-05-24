@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTrek Inventory</title>
+    <link rel="stylesheet" type="text/css" href="inventory.css">
+    <style>
+        #addProductModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        #editProductModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        #addBrandModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .modal-content label {
+            display: block;
+
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+
+        td.imgCell {
+            width: 100px;
+            height: 100px;
+        }
+
+        td.imgCell img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .selected {
+            background-color: rgb(211, 211, 211);
+        }
+
+        .select-dropdown {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #000000;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <img src="TeckTrekResized.png" alt="TechTrek Logo" class="logo">
+        <button class="logout-btn" onclick="logout()">LOG-OUT</button>
+    </div>
+
+    <div class="controls-container">
+        <input autocomplete="off" type="text" class="search-bar" placeholder="Search product..." id="searchInput">
+        <button class="add-product-btn button" onclick="openAddProductModal()">Add Product</button>
+    </div>
+
+    <div class="table-container">
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th onclick="sortTable('Product Name')">Product Name <span class="sort-icon">▼</span></th>
+                    <th onclick="sortTable('Brand')">Brand <span class="sort-icon">▼</span></th>
+                    <th onclick="sortTable('Type')">Type <span class="sort-icon">▼</span></th>
+                    <th onclick="sortTable('Quantity')">Quantity <span class="sort-icon">▼</span></th>
+                    <th onclick="sortTable('Price')">Price <span class="sort-icon">▼</span></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+        <div class="action-buttons-container">
+            <button class="button" onclick="openEditProductModal()">Edit</button>
+            <button class="button" id="deleteButton" onclick="deleteRow()">Delete</button>
+        </div>
+
+    <div id="addProductModal">
+        <div class="modal-content">
+            <label for="addLabel" style="font-size: larger;"><b>Add Product:</b></label><br>
+
+            <label for="productImg">Product Image:</label>
+            <input type="file" id="productImage" name="productImage" accept="image/*">
+
+            <label for="productName">Product Name:</label>
+            <input autocomplete="off" type="text" id="productName" name="productName">
+
+            <label for="productBrand">Brand:</label>
+            <select id="productBrand" name="productBrand" class="select-dropdown">
+            </select>
+
+            <label for="productType">Type:</label>
+            <select id="productType" name="productType" class="select-dropdown">
+                <option value="Graphics Card">Graphics Card</option>
+                <option value="CPU">CPU</option>
+                <option value="Power Supply">Power Supply</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Gaming Chair">Gaming Chair</option>
+            </select>
+
+            <label for="productQuantity">Quantity:</label>
+            <input autocomplete="off" type="text" id="productQuantity" name="productQuantity">
+
+            <label for="productPrice">Price:</label>
+            <input autocomplete="off" type="text" id="productPrice" name="productPrice">
+
+            <button class="button" onclick="closeAddProductModal()">Cancel</button>
+            <button autocomplete="off" class="button" onclick="addProduct()">Add Product</button>
+        </div>
+    </div>
+
+    <div id="editProductModal">
+        <div class="modal-content">
+            <label for="editLabel" style="font-size: larger;"><b>Edit Product:</b></label><br>
+
+            <label for="editproductImg">Product Image:</label>
+            <input type="file" id="editproductImg" name="editproductImg" accept="image/*">
+
+            <label for="editproductName">Product Name:</label>
+            <input autocomplete="off" type="text" id="editproductName" name="editproductName">
+
+            <label for="editproductBrand">Brand:</label>
+            <select id="editproductBrand" name="editproductBrand" class="select-dropdown"></select>
+
+            <label for="editproductType">Type:</label>
+            <select id="editproductType" name="editproductType" class="select-dropdown">
+                <option value="Graphics Card">Graphics Card</option>
+                <option value="CPU">CPU</option>
+                <option value="Power Supply">Power Supply</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Gaming Chair">Gaming Chair</option>
+            </select>
+
+            <label for="editproductQuantity">Quantity:</label>
+            <input autocomplete="off" type="text" id="editproductQuantity" name="editproductQuantity">
+
+            <label for="editproductPrice">Price:</label>
+            <input autocomplete="off" type="text" id="editproductPrice" name="editproductPrice">
+
+            <button class="button" onclick="closeEditProductModal()">Cancel</button>
+            <button autocomplete="off" class="button" onclick="editFetct()">Edit Product</button>
+        </div>
+    </div>
+
+    <script>
+        let branded = false;
+        const brands = [];
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            getBrands();
+
+
+
+
+            var table = document.querySelector("table");
+            var sortDirection = "asc";
+            var lastClickedColumn = null;
+
+            function updateSortIcon(columnIndex) {
+                var sortIcons = document.querySelectorAll(".sort-icon");
+                sortIcons.forEach(icon => icon.innerHTML = "▼");
+                var currentIcon = table.rows[0].cells[columnIndex].getElementsByClassName("sort-icon")[0];
+                currentIcon.innerHTML = (sortDirection === "asc") ? "▲" : "▼";
+            }
+            function handleSearch() {
+                var searchInput = document.getElementById('searchInput').value.toLowerCase();
+                var rows = table.querySelectorAll("tbody tr");
+
+                rows.forEach(row => {
+                    var productName = row.cells[1].textContent.toLowerCase();
+                    if (productName.includes(searchInput)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+
+            function sortTable(columnIndex) {
+                var rows, switching, i, x, y, shouldSwitch;
+                switching = true;
+
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        x = rows[i].getElementsByTagName("TD")[columnIndex];
+                        y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+                        if (sortDirection === "asc") {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else if (sortDirection === "desc") {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (shouldSwitch) {
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                    }
+                }
+
+                sortDirection = (sortDirection === "asc") ? "desc" : "asc";
+                updateSortIcon(columnIndex);
+            }
+
+            function handleColumnClick(columnIndex) {
+                if (lastClickedColumn !== null && lastClickedColumn !== columnIndex) {
+                    var previousIcon = table.rows[0].cells[lastClickedColumn].getElementsByClassName("sort-icon")[0];
+                    previousIcon.innerHTML = "▼";
+                }
+
+                sortTable(columnIndex);
+                lastClickedColumn = columnIndex;
+            }
+
+            function displayNothingSet() {
+                var rows = table.querySelectorAll("tbody tr");
+                rows.forEach(row => {
+                    var cells = row.querySelectorAll("td");
+                    cells.forEach(cell => {
+                        if (cell.innerHTML.trim() === "") {
+                            cell.innerHTML = "Nothing set";
+                        }
+                    });
+                });
+            }
+            var headerCells = document.querySelectorAll("th");
+            headerCells.forEach((cell, index) => {
+                cell.addEventListener("click", function () {
+                    handleColumnClick(index);
+                });
+            });
+
+            displayNothingSet();
+            fetchData();
+
+            // fetch('get_product.php')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         displayProduct(data);
+            //     })
+            //     .catch(error => console.error('Error:', error));
+        });
+        
+      
+
+        function getBrands() {
+            fetch('get_brands.php')
+            .then(response => response.json())
+            .then(data => {
+                // populateBrandDropdown(data.brands);
+                // populateEditBrandDropdown(data.brands);
+                brands.push(...data.brand_Data);
+                console.log(brands);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function populateBrandDropdown(brands) {
+            if (!branded) {
+                var selectElement = document.getElementById('productBrand');
+                
+                brands.forEach(brand => {
+                    var option = document.createElement('option');
+                    option.value = brand.brand_id;
+                    option.textContent = brand.brand_name;
+                    selectElement.appendChild(option);
+                });
+            }
+            branded = true;
+        }
+
+        function populateEditBrandDropdown(brands) {
+            if (!branded) {
+                var selectElement = document.getElementById('editproductBrand');
+
+                brands.forEach(brand => {
+                    var option = document.createElement('option');
+                    option.value = brand.brand_id;
+                    option.textContent = brand.brand_name;;
+                    selectElement.appendChild(option);
+                });
+            }
+            branded = true;
+        }
+
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'block';
+            populateBrandDropdown(brands);
+        }
+
+        function closeAddProductModal() {
+            location.reload()
+            document.getElementById('addProductModal').style.display = 'none';
+        }
+
+        function openEditProductModal() {
+            editSelected();
+            populateEditBrandDropdown(brands);
+        }
+
+        function closeEditProductModal() {
+            location.reload()
+            document.getElementById('editProductModal').style.display = 'none';
+        }
+
+
+        window.onclick = function (event) {
+            var modal = document.getElementById('addProductModal');
+            if (event.target == modal) {
+                closeAddProductModal();
+            }
+        };
+
+        function addProduct() {
+            closeAddProductModal();
+        }
+        function editProduct() {
+            closeEditProductModal()
+        }
+
+        function logout() {
+            window.location.href = 'logout.php';
+        }
+
+    </script>
+
+    <script>
+        var oldData = [];
+
+        function addProduct() {
+                var productName = document.getElementById('productName').value;
+                var productBrand = document.getElementById('productBrand').value;
+                var productType = document.getElementById('productType').value;
+                var productQuantity = document.getElementById('productQuantity').value;
+                var productPrice = document.getElementById('productPrice').value;
+                var productImage = document.getElementById('productImage').files[0];
+
+                console.log(productBrand + productType);
+
+
+                if (!productName || !productBrand || !productImage || !productType || !productQuantity || !productPrice) {
+                    alert("Please fill in all fields");
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append('name', productName);
+                formData.append('brand', productBrand);
+                formData.append('image', productImage);
+                formData.append('type', productType);
+                formData.append('quantity', productQuantity);
+                formData.append('price', productPrice);
+
+                console.log(formData);
+
+
+                fetch('add_product.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(data);
+                            displayProduct(data);
+                            location.reload()
+                            document.getElementById('productName').value = '';
+                            document.getElementById('productBrand').value = '';
+                            document.getElementById('productType').value = '';
+                            document.getElementById('productQuantity').value = '';
+                            document.getElementById('productPrice').value = '';
+                            document.getElementById('productImage').value = '';
+                            closeAddProductModal();
+                        } else {
+                            alert(data.message || "An error occurred");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+        document.getElementById("productTable").addEventListener("click", function (event) {
+            if (event.target.tagName === "TD") {
+                var row = event.target.closest("tr");
+                // Toggle the 'selected' class on the row
+                if (row) {
+                    row.classList.toggle("selected");
+                }
+            }
+        });
+
+        function deleteRow() {
+            var selectedRow = document.querySelectorAll('#productTable tr.selected')
+
+            if (selectedRow) {
+                var RowArr = [];
+                selectedRow.forEach(row => {
+                    var cells = row.getElementsByTagName("td");
+                    var rowData = Array.from(cells).map(cell => cell.textContent);
+                    RowArr.push(rowData);
+                })
+
+
+                fetch('delete_product.php', {
+                    method: 'POST',
+                    header: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: RowArr }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.success) {
+                            fetchData();
+                        }
+                    })
+                    .catch(error => console.log(error));
+            }
+        }
+
+        function displayProduct(data) {
+            var table = document.getElementById('productTable');
+            var tableBody = table.getElementsByTagName('tbody')[0];
+            var ImageDirectory = './Images/';
+            tableBody.innerHTML = '';
+
+            if (data.productData) {
+                console.log(data.productData);
+                for (const item of data.productData) {
+                    const row = tableBody.insertRow();
+
+                    for (let i = 0; i < table.rows[0].cells.length; i++) {
+                        var cell = row.insertCell();
+                        if (i == 0) {
+                            cell.className = 'imgCell';
+                        }
+                    }
+
+                    var imgElem = document.createElement('img');
+                    imgElem.src = ImageDirectory + item['image'];
+
+                    row.cells[0].appendChild(imgElem);
+                    row.cells[1].textContent = item['name'];
+                    row.cells[2].textContent = item['brand_name'];
+                    row.cells[3].textContent = item['type'];
+                    row.cells[4].textContent = item['quantity'];
+                    row.cells[5].textContent = item['price'];
+
+                }
+            }
+        }
+
+        function fetchData() {
+            fetch('get_product.php')
+                .then(response => response.json())
+                .then(data => {
+                    displayProduct(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function editSelected() {
+            var editproductName = document.getElementById('editproductName');
+            var editproductBrand = document.getElementById('editproductBrand');
+            var editproductType = document.getElementById('editproductType');
+            var editproductQuantity = document.getElementById('editproductQuantity');
+            var editproductPrice = document.getElementById('editproductPrice');
+
+            var selectedRow = document.querySelector('#productTable tr.selected')
+            var selectedRows = document.querySelectorAll('#productTable tr.selected')
+
+            if (selectedRows.length > 1) {
+                alert('You can only edit one at a time.');
+                return;
+            }
+
+            if (selectedRow) {
+                document.getElementById('editProductModal').style.display = 'block';
+                var cells = Array.from(selectedRow.getElementsByTagName("td"));
+
+                editproductName.value = cells[1].innerText;
+                editproductBrand.value = cells[2].innerText;
+                editproductType.value = cells[3].innerText;
+                editproductQuantity.value = cells[4].innerText;
+                editproductPrice.value = cells[5].innerText
+
+                oldData = cells.map(function (element) {
+                    return element.textContent;
+                });
+
+                console.log(oldData);
+
+            } else {
+                closeEditProductModal();
+            }
+        }
+
+
+        function editFetct() {
+
+            var editproductName = document.getElementById('editproductName');
+            var editproductBrand = document.getElementById('editproductBrand');
+            var editproductType = document.getElementById('editproductType');
+            var editproductQuantity = document.getElementById('editproductQuantity');
+            var editproductPrice = document.getElementById('editproductPrice');
+            var editproductImg = document.getElementById('editproductImg').files[0];
+
+            if (!editproductImg || !editproductName || !editproductBrand || !editproductType || !editproductQuantity || !editproductPrice) {
+                alert("Please fill in all fields");
+                return;
+            }
+
+
+            var editProductData = [
+                editproductName.value,
+                editproductBrand.value,
+                editproductType.value,
+                editproductQuantity.value,
+                editproductPrice.value
+            ];
+
+
+            var formData = new FormData();
+            formData.append('oldData', JSON.stringify(oldData));
+            formData.append('newData', JSON.stringify(editProductData));
+            formData.append('file', editproductImg);
+
+            // console.log(oldData);
+            // console.log(editProductData);
+
+
+            fetch('edit_product.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        location.reload()
+                        closeEditProductModal();
+                        fetchData();
+                    }
+                })
+                .catch(error => console.log(error));
+
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

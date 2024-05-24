@@ -1,0 +1,147 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    background: linear-gradient(to bottom right, #808080 50%, #333333 50%);
+    font-family: 'Bebas Neue', sans-serif;
+    position: relative;
+    overflow: auto;
+    background-image: url('background2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
+}
+
+.header {
+    width: 100%;
+    background-color: #1b1919;
+    padding: 7px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+}
+
+.logo {
+    max-width: 180px;
+    max-height: 180px;
+}
+
+.logout-btn,
+.button {
+    font-family: 'Bebas Neue', sans-serif;
+    color: white;
+    border: none;
+    background-color: rgb(65, 105, 225);
+    cursor: pointer;
+    font-size: 110%;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.button:hover {
+    background-color: rgb(56, 93, 201);
+}
+
+.logout-btn {
+    background: none;
+}
+
+.controls-container {
+    display: flex;
+    width: 69%;
+    margin-top: 100px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.search-bar {
+    padding: 6px;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+.add-product-btn {
+    margin-left: 10px;
+}
+
+.add-brand-btn {
+    margin-left: 10px;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.table-container {
+    background-color: rgb(85, 85, 85);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    width: 65%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #000000;
+    color: white;
+    position: relative;
+    cursor: pointer;
+}
+
+.sort-icon {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+}
+
+.product-image {
+    max-width: 40px;
+    max-height: 40px;
+    display: none;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    border-radius: 10px;
+    left: 100px;
+}
+
+.action-buttons button {
+    margin-left: 8px;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+.action-buttons-container {
+    display: flex;
+    padding: 5px 10px;
+    width: 69%;
+    box-sizing: border-box;
+}
+#deleteButton{
+    margin: 0 10px;
+}
